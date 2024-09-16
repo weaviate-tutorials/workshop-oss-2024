@@ -27,6 +27,21 @@ class CollectionName(str, Enum):
 def connect_to_weaviate() -> WeaviateClient:
     client = weaviate.connect_to_local(
         port=8080,
+        # Passing headers in case we use these integrations
+        headers={
+            "X-ANTHROPIC-API-KEY": os.environ["ANTHROPIC_API_KEY"],
+            "X-OPENAI-API-KEY": os.environ["OPENAI_API_KEY"],
+            "X-COHERE-API-KEY": os.environ["COHERE_API_KEY"],
+        },
+    )
+    return client
+
+
+def connect_to_mt_weaviate() -> WeaviateClient:
+    client = weaviate.connect_to_local(
+        port=8180,
+        grpc_port=50151,
+        # Passing headers in case we use these integrations
         headers={
             "X-ANTHROPIC-API-KEY": os.environ["ANTHROPIC_API_KEY"],
             "X-OPENAI-API-KEY": os.environ["OPENAI_API_KEY"],
@@ -77,6 +92,7 @@ def weaviate_query(
     limit: int,
     search_type: Literal["Hybrid", "Vector", "Keyword"],
     rag_query: Optional[str] = None,
+    tenant: Optional[str] = None,
 ):
     if company_filter:
         company_filter_obj = Filter.by_property("company_author").like(company_filter)
@@ -90,9 +106,13 @@ def weaviate_query(
     elif search_type == "Keyword":
         alpha = 0
 
+    if tenant is not None:
+        tgt_coll = collection.with_tenant(tenant)
+    else:
+        tgt_coll = collection
 
     if rag_query:
-        search_response = collection.generate.hybrid(
+        search_response = tgt_coll.generate.hybrid(
             query=query,
             target_vector="text_with_metadata",
             filters=company_filter_obj,
@@ -101,7 +121,7 @@ def weaviate_query(
             grouped_task=rag_query
         )
     else:
-        search_response = collection.query.hybrid(
+        search_response = tgt_coll.query.hybrid(
             query=query,
             target_vector="text_with_metadata",
             filters=company_filter_obj,
@@ -111,9 +131,9 @@ def weaviate_query(
     return search_response
 
 
-def get_pprof_results() -> str:
+def get_pprof_results(port=6060) -> str:
     return subprocess.run(
-        ["go", "tool", "pprof", "-top", "http://localhost:6060/debug/pprof/heap"],
+        ["go", "tool", "pprof", "-top", f"http://localhost:{port}/debug/pprof/heap"],
         capture_output=True,
         text=True,
         timeout=10,

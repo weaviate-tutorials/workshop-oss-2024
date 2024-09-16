@@ -1,10 +1,10 @@
 # File: ./1_create_collection.py
 from weaviate.classes.config import Property, DataType, Configure
-from helpers import CollectionName, connect_to_weaviate
+from helpers import CollectionName, connect_to_mt_weaviate
 
 
 # Connect to Weaviate
-client = connect_to_weaviate()  # Uses `weaviate.connect_to_local` under the hood
+client = connect_to_mt_weaviate()
 
 # Delete existing collection if it exists
 client.collections.delete(CollectionName.SUPPORTCHAT_MT)
@@ -18,7 +18,10 @@ default_vindex_config = Configure.VectorIndex.hnsw(
 # Create a new collection with specified properties and vectorizer configuration
 chunks = client.collections.create(
     name=CollectionName.SUPPORTCHAT_MT,
-    multi_tenancy_config=Configure.multi_tenancy(enabled=True),
+    multi_tenancy_config=Configure.multi_tenancy(
+        enabled=True,
+        auto_tenant_creation=True,
+    ),
     properties=[
         Property(name="text", data_type=DataType.TEXT),
         Property(name="dialogue_id", data_type=DataType.INT),

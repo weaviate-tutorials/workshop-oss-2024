@@ -125,20 +125,6 @@ with connect_to_weaviate() as client:
             node_data = client.cluster.nodes(output="verbose")
             st.metric(label="Nodes", value=len(node_data))
 
-        # with st.container(border=True):
-        #     result = get_pprof_results()
-
-        #     if result.returncode == 0:
-        #         match = re.search(
-        #             r"Showing nodes accounting for (\d+\.?\d*)MB, (\d+\.?\d*)% of (\d+\.?\d*)MB total",
-        #             result.stdout,
-        #         )
-        #         if match:
-        #             total_mb = float(match.group(3))
-        #             st.metric(label="Memory usage", value=f"{total_mb:.1f} MB")
-        #     else:
-        #         st.error("Error running pprof")
-
         with st.container(border=True):
 
             @st.fragment(run_every=2)
