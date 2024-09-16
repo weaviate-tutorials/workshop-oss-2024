@@ -21,6 +21,7 @@ class CollectionName(str, Enum):
     """Enum for Weaviate collection names."""
 
     SUPPORTCHAT = "SupportChat"
+    SUPPORTCHAT_MT = "SupportChatMT"
 
 
 def connect_to_weaviate() -> WeaviateClient:

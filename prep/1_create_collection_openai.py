@@ -25,7 +25,8 @@ chunks = client.collections.create(
         Property(name="created_at", data_type=DataType.DATE),
     ],
     # ================================================================================
-    # Set up the collection to use OpenAI
+    # Using our OpenAI integration: https://weaviate.io/developers/weaviate/model-providers/openai
+    # Many other integrations available. See https://weaviate.io/developers/weaviate/model-providers/
     # ================================================================================
     vectorizer_config=[
         Configure.NamedVectors.text2vec_openai(
