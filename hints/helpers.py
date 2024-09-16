@@ -93,30 +93,35 @@ def weaviate_query(
     search_type: Literal["Hybrid", "Vector", "Keyword"],
     rag_query: Optional[str] = None,
 ):
-    # ================================================================================
-    # STUDENT **TODO**:
-    # Implement the `weaviate_query` function to query Weaviate.
-    # ================================================================================
     if company_filter:
-        # What does a filter look like for the company_author property?
-        company_filter_obj = None
+        company_filter_obj = Filter.by_property("company_author").like(company_filter)
     else:
         company_filter_obj = None
 
-    # What should alpha be for a hybrid, vector, or keyword search?
     if search_type == "Hybrid":
-        alpha = 0
+        alpha = 0.5
     elif search_type == "Vector":
-        alpha = 0
+        alpha = 1
     elif search_type == "Keyword":
         alpha = 0
 
-    if not rag_query:
-        # Implement the search query
-        search_response = None
+    if rag_query:
+        search_response = collection.generate.hybrid(
+            query=query,
+            target_vector="text_with_metadata",
+            filters=company_filter_obj,
+            alpha=alpha,
+            limit=limit,
+            grouped_task=rag_query
+        )
     else:
-        # Implement the RAG query
-        search_response = None
+        search_response = collection.query.hybrid(
+            query=query,
+            target_vector="text_with_metadata",
+            filters=company_filter_obj,
+            alpha=alpha,
+            limit=limit,
+        )
     return search_response
 
 
