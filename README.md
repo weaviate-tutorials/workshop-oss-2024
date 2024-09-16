@@ -81,13 +81,14 @@ If you have previously downloaded the data file, it will use a cached version. T
 python workshop_setup.py --use-cache False
 ```
 
-If the download is going to take *very* long (e.g. more than 10 minutes), maybe stop the download & use a smaller dataset. Do this by adding `--dataset-size 10000` to the end of your command, like:
+> [!TIP]
+> If the download is going to take *very* long (e.g. more than 10 minutes), maybe stop the download & use a smaller dataset. Do this by adding `--dataset-size 10000` to the end of your command, like:
+>
+> ```shell
+> python workshop_setup.py --dataset-size 10000
+> ```
 
-```shell
-python workshop_setup.py --dataset-size 10000
-```
-
-While the download is progressing, you can continue to [the next section (1.3)](#13-install-containerization-tools). Open a new terminal window, and continue along.
+While the download is progressing, you can continue to [the next section (1.3)](#13-install-containerization-tools). Leave the download running in the background.
 
 ## 1.3 Install Docker
 
@@ -117,6 +118,8 @@ You should also be able to see the memory usage of the Weaviate pod by running:
 go tool pprof -top http://localhost:6060/debug/pprof/heap
 ```
 
+This isn't necessary, but for the workshop, we'll give you an idea of how the memory usage changes as we add data to the system.
+
 # Step 3: Work with Weaviate
 
 In the in-person workshop, we will go through the introductory materials in `intro_workshop.ipynb` together. If you are doing this workshop on your own, you can go through the materials at your own pace.
@@ -125,7 +128,7 @@ For complete examples, see `intro_workshop_finished.ipynb` notebook.
 
 ## 3.1 Run the demo Streamlit app
 
-We have a Streamlit app that will help you to visualise basic cluster statistics, and to make use of the data. (Remember to navigate to the project directory and activate the virtual environment.) Run it with:
+We have a Streamlit app that will help you to visualise basic cluster statistics, and to do some cool things with the data. (Remember to navigate to the project directory and activate the virtual environment.) Run it with:
 
 ```shell
 streamlit run app.py
@@ -178,7 +181,7 @@ ENJOY THE WORKSHOP
 
 # Step 4: Additional exercises to try
 
-## 4.1 Update the vector index & quantization settings (Any deployment)
+## 4.1 Update the vector index & quantization settings
 
 In `1_create_collection.py`, you can change the settings for the vector index and quantization.
 
