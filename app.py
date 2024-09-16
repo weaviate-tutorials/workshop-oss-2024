@@ -78,10 +78,12 @@ with connect_to_weaviate() as client:
         )
 
         st.markdown(f"For query: `{query}`")
-        with st.container(height=250):
-            if search_response is None:
-                st.write("Is the search function implemented yet? 🤔")
-            else:
+
+        if search_response is None:
+            st.write("Nothing here... Has the search function been implemented yet? 🤔")
+        else:
+            # ===== SEARCH RESULTS =====
+            with st.container(height=250):
                 for o in search_response.objects:
                     with st.expander(
                         f"**{o.properties['company_author']}**: {o.properties['text'][:50]}..."
@@ -90,22 +92,21 @@ with connect_to_weaviate() as client:
                         st.write(f"Created at: {o.properties['created_at']}")
                         st.write(f"Full text: {o.properties['text']}")
 
-        # ===== RAG =====
+            # ===== RAG =====
+            if len(search_response.objects) > 0:
+                rag_query = st.text_area(
+                    label="What should we do with the search results?",
+                )
 
-        if len(search_response.objects) > 0:
-            rag_query = st.text_area(
-                label="What should we do with the search results?",
-            )
+                if st.button("Generate response"):
+                    with st.spinner("Generating response..."):
+                        search_response = weaviate_query(
+                            collection, query, company_filter, limit, search_type, rag_query
+                        )
 
-            if st.button("Generate response"):
-                with st.spinner("Generating response..."):
-                    search_response = weaviate_query(
-                        collection, query, company_filter, limit, search_type, rag_query
-                    )
-
-                    if search_response:
-                        with st.container(height=250, border=True):
-                            st.write(search_response.generated)
+                        if search_response:
+                            with st.container(height=250, border=True):
+                                st.write(search_response.generated)
 
     with col2:
         st.markdown("### Cluster statistics")

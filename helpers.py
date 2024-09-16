@@ -117,6 +117,9 @@ def weaviate_query(
     else:
         # Implement the RAG query
         search_response = None
+    # ================================================================================
+    # If you need help with the query, check the hints/helpers.py file.
+    # ================================================================================
     return search_response
 
 
