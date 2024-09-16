@@ -173,12 +173,6 @@ Now, refresh the Streamlit app. You should see the data in the app. Explore the 
 ENJOY THE WORKSHOP
 *************************
 
-We'll try lots of different things here & have a look at the memory profile of the Weaviate pod.
-
-*************************
-ENJOY THE WORKSHOP
-*************************
-
 # Step 4: Additional exercises to try
 
 ## 4.1 Update the vector index & quantization settings
