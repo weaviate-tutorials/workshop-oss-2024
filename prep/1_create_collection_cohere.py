@@ -16,7 +16,7 @@ default_vindex_config = Configure.VectorIndex.hnsw(
 )
 
 # Create a new collection with specified properties and vectorizer configuration
-chunks = client.collections.create(
+collection = client.collections.create(
     name=CollectionName.SUPPORTCHAT,
     properties=[
         Property(name="text", data_type=DataType.TEXT),
