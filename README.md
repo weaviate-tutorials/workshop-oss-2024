@@ -94,6 +94,12 @@ While the download is progressing, you can continue to [the next section (1.3)](
 
 Install Docker Desktop: https://www.docker.com/products/docker-desktop/
 
+## 1.4 Install Go
+
+The Streamlit app runs a Go command to get the Weaviate memory profile. You will need to have Go installed to run this command.
+
+Install Go from the [Go website](https://golang.org/).
+
 # Part 2: Cluster setup
 
 Start up a (single-node) Weaviate cluster with the following command:
