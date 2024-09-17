@@ -96,7 +96,7 @@ Install Docker Desktop: https://www.docker.com/products/docker-desktop/
 
 ## 1.4 Install Go
 
-The Streamlit app runs a Go command to get the Weaviate memory profile. You will need to have Go installed to run this command.
+The demo Streamlit app runs a Go command to get the Weaviate memory profile. You will need to have Go installed to run this command.
 
 Install Go from the [Go website](https://golang.org/).
 
